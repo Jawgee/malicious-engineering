@@ -1,7 +1,16 @@
+import sys
 import webbrowser
 import os
 import subprocess
 import shutil
+
+def install_dependencies():
+    try:
+        import paramiko
+    except ImportError:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "paramiko"])
+
+install_dependencies()
 import paramiko
 
 sysList = []
