@@ -24,44 +24,59 @@ def open_browser():
 def get_system_info():
     # FINDS SYSTEM INFORMATION
     print('<<SYSTEM INFORMATION>>')
-    ID = subprocess.check_output(
-        ['systeminfo'],
-        text=True,
-        encoding='utf-8',
-        errors='replace'  
-    )
+    try:
+        ID = subprocess.check_output(
+            ['systeminfo'],
+            text=True,
+            encoding='utf-8',
+            errors='replace'  
+        )
 
-    for line in ID.splitlines():
-        cleaned = line.strip()
-        if cleaned:
-            sys_list.append(cleaned)
-            print(cleaned)
+        for line in ID.splitlines():
+            cleaned = line.strip()
+            if cleaned:
+                sys_list.append(cleaned)
+                print(cleaned)
+    except FileNotFoundError:
+        print("The 'systeminfo' command is not available on this system.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error occurred while retrieving system information: {e}")
 
 def get_network_info():
     # FINDS NETWORK INFORMATION
     print('<<NETWORK INFORMATION>>')
-    data = subprocess.check_output(
-        ['ipconfig', '/all'],
-        text=True,
-        encoding='utf-8',
-        errors='replace'
-    )
+    try:
+        data = subprocess.check_output(
+            ['ipconfig', '/all'],
+            text=True,
+            encoding='utf-8',
+            errors='replace'
+        )
 
-    for line in data.splitlines():
-        cleaned = line.strip()
-        if cleaned:
-            data_list.append(cleaned)
-            print(cleaned)
+        for line in data.splitlines():
+            cleaned = line.strip()
+            if cleaned:
+                data_list.append(cleaned)
+                print(cleaned)
+    except FileNotFoundError:
+        print("The 'ipconfig' command is not available on this system.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error occurred while retrieving network information: {e}")
 
 def get_directories():
     # FINDS DIRECTORIES IN C DRIVE
     print('<<C:\\ DIRECTORIES>>')
     print()
-    DIR = os.listdir(r'C:\\')
+    try:
+        DIR = os.listdir(r'C:\\')
 
-    for line in DIR:
-        dir_list.append(line)
-        print(line)
+        for line in DIR:
+            dir_list.append(line)
+            print(line)
+    except PermissionError:
+        print("Permission denied when trying to list directories in C:\\")
+    except Exception as e:
+        print(f"An error occurred while listing directories: {e}")
 
 def write_to_file():
     # CREATES AND WRITES INFO TO .DLL FILE IN DIRECTORY
