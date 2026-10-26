@@ -40,12 +40,18 @@ def get_system_info():
 def get_network_info():
     # FINDS NETWORK INFORMATION
     print('<<NETWORK INFORMATION>>')
-    data = subprocess.check_output(['ipconfig', '/all']).decode('utf-8').split('\n')
+    data = subprocess.check_output(
+        ['ipconfig', '/all'],
+        text=True,
+        encoding='utf-8',
+        errors='replace'
+    )
 
-    for item in data:
-        dataList.append(str(item.split('\r')[:-1]))
-    for i in dataList:
-        print(i[2:-2])
+    for line in data.splitlines():
+        cleaned = line.strip()
+        if cleaned:
+            dataList.append(cleaned)
+            print(cleaned)
 
 def get_directories():
     # FINDS DIRECTORIES IN C DRIVE
